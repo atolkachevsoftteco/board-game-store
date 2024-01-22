@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.11'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.alex.gamestore'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '2.7.11'
+
+
+	implementation 'org.flywaydb:flyway-core'
+	implementation group: 'com.google.guava', name: 'guava', version: '31.0-jre'
+	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.7.5'
+
+	implementation group: 'org.keycloak', name: 'keycloak-dependencies-server-all', version: '21.1.1', ext: 'pom'
+	implementation group: 'org.keycloak', name: 'keycloak-crypto-default', version: '21.1.1'
+	implementation group: 'org.keycloak', name: 'keycloak-admin-ui', version: '21.1.1'
+	compileOnly group: 'org.keycloak', name: 'keycloak-services', version: '21.1.1'
+	implementation group: 'org.keycloak', name: 'keycloak-rest-admin-ui-ext', version: '21.1.1'
+	implementation group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '6.2.4.Final'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

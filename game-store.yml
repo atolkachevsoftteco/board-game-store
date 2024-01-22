@@ -1,0 +1,21 @@
+resources:
+  - name: repo
+    type: git
+    source:
+      uri: https://github.com/atolkachevsoftteco/board-game-store.git
+
+jobs:
+  - name: game-store-job
+    plan:
+      - get: repo
+        trigger: true
+      - task: game-store-task
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: busybox
+          run:
+            path: echo
+            args: ["Hello Game Store!"]
