@@ -13,9 +13,31 @@ jobs:
         config:
           platform: linux
           image_resource:
+            type: docker-image
+            source:
+              repository: gradle
+          inputs:
+            - name: repo
+          outputs:
+            - name: build-output
+          run:
+            path: ./repo/build.sh
+
+
+      - task: read-the-artifact
+        config:
+          platform: linux
+          image_resource:
             type: registry-image
             source:
               repository: busybox
+          # To receive "the-artifact", specify it as an input
+          inputs:
+            - name: build-output
           run:
-            path: echo
-            args: ["Hello Game Store!"]
+            path: sh
+            args:
+              - -cx
+              - |
+                cd /build-output
+                ls -l .

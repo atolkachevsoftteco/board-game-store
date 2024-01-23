@@ -1,6 +1,5 @@
 package com.alex.gamestore.configuration;
 
-import com.alex.gamestore.filters.JwtTokenFilter;
 import com.alex.gamestore.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +22,11 @@ public class ApplicationSecurity {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(handler).and()
+//                .exceptionHandling().authenticationEntryPoint(handler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/login/**").permitAll()
                 .antMatchers("/**").permitAll()
