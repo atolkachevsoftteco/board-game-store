@@ -39,5 +39,4 @@ jobs:
             args:
               - -cx
               - |
-                cd /build-output
-                ls -l .
+                ls -l ./build-output
