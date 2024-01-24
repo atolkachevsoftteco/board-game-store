@@ -47,13 +47,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-task updateVersionNumber {
-	doLast {
-		"echo \"${project.version}\" > version/version"
-	}
-}
-
-build.finalizedBy(updateVersionNumber)
+//task updateVersionNumber {
+//	doLast {
+//		sh "echo \"${project.version}\" > version/version"
+//	}
+//}
+//
+//build.finalizedBy(updateVersionNumber)
 
 tasks.named('test') {
 	useJUnitPlatform()

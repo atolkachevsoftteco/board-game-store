@@ -10,7 +10,8 @@ resources:
       driver: git
       initial_version: 0.0.1
       uri: https://github.com/atolkachevsoftteco/board-game-store.git
-      branch: version
+      branch: master
+      file: version
 
 jobs:
   - name: game-store-job
