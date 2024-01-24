@@ -2,10 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'pl.allegro.tech.build.axion-release' version '1.16.1'
 }
 
 group = 'com.alex.gamestore'
-version = '0.0.1-SNAPSHOT'
+version = scmVersion.version
 sourceCompatibility = '17'
 
 configurations {
@@ -45,6 +46,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+task updateVersionNumber {
+	doLast {
+		"echo \"${project.version}\" > version/version"
+	}
+}
+
+build.finalizedBy(updateVersionNumber)
 
 tasks.named('test') {
 	useJUnitPlatform()

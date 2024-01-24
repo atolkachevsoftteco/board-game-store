@@ -3,6 +3,14 @@ resources:
     type: git
     source:
       uri: https://github.com/atolkachevsoftteco/board-game-store.git
+      branch: master
+  - name: version
+    type: semver
+    source:
+      driver: git
+      initial_version: 0.0.1
+      uri: https://github.com/atolkachevsoftteco/board-game-store.git
+      branch: version
 
 jobs:
   - name: game-store-job
@@ -22,21 +30,66 @@ jobs:
             - name: build-output
           run:
             path: ./repo/build.sh
+          caches:
+            - path: .gradle/
+        on_success:
+          put: version
+          params:
+            bump: minor
+        on_failure:
+          put: version
+          params:
+            bump: patch
 
 
-      - task: read-the-artifact
+
+#      - task: read-the-artifact
+#        config:
+#          platform: linux
+#          image_resource:
+#            type: registry-image
+#            source:
+#              repository: busybox
+#          # To receive "the-artifact", specify it as an input
+#          inputs:
+#            - name: build-output
+#          run:
+#            path: sh
+#            args:
+#              - -cx
+#              - |
+#                sudo cmod=+x ./build-output
+#                ls -l ./build-output
+#                filename=ls ./build-output | head -n 1
+#                third_element=$(echo "$filename" | cut -d "-" -f 3)
+#                echo "$third_element"
+
+  - name: release
+    plan:
+      - get: repo
+        trigger: false
+      - get: version
+        params:
+          bump: minor
+      - task: release
         config:
           platform: linux
           image_resource:
             type: registry-image
             source:
-              repository: busybox
-          # To receive "the-artifact", specify it as an input
+              repository: java
+              tag: openjdk-11
           inputs:
-            - name: build-output
+            - name: version
           run:
-            path: sh
+            path: /bin/sh
             args:
-              - -cx
+              - -c
               - |
-                ls -l ./build-output
+                cd game-store
+                ./gradlew release -Prelease.useAutomaticVersion=true
+                echo "version: $(cat version/version)" > version/number
+        on_success:
+          put: version
+          params:
+            file: version/number
