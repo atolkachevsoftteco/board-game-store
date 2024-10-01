@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.11'
+	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'pl.allegro.tech.build.axion-release' version '1.16.1'
 }
@@ -25,14 +25,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '2.7.11'
-
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client'
 
 	implementation 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
+
 	implementation group: 'com.google.guava', name: 'guava', version: '31.0-jre'
 	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.7.5'
 
 	implementation group: 'org.keycloak', name: 'keycloak-dependencies-server-all', version: '21.1.1', ext: 'pom'
 	implementation group: 'org.keycloak', name: 'keycloak-crypto-default', version: '21.1.1'
@@ -40,6 +41,7 @@ dependencies {
 	compileOnly group: 'org.keycloak', name: 'keycloak-services', version: '21.1.1'
 	implementation group: 'org.keycloak', name: 'keycloak-rest-admin-ui-ext', version: '21.1.1'
 	implementation group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '6.2.4.Final'
+	implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.8.3'
 
 
 	compileOnly 'org.projectlombok:lombok'
