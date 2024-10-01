@@ -7,24 +7,29 @@ import com.alex.gamestore.jpa.ProductRepository;
 import com.alex.gamestore.model.BoardGame;
 import com.alex.gamestore.model.GameType;
 import com.alex.gamestore.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class StockService {
 
-    @Autowired
-    private BoardGameRepository boardGameRepository;
+    private final BoardGameRepository boardGameRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public StockService(BoardGameRepository boardGameRepository, ProductRepository productRepository) {
+        this.boardGameRepository = boardGameRepository;
+        this.productRepository = productRepository;
+    }
 
     public Page<BoardGame> getAllGamesFromWarehouse(Pageable pageable, GameType type) {
         if (type != null) {
@@ -43,13 +48,19 @@ public class StockService {
         return product.map(Product::getInStock).orElseThrow(RuntimeException::new);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void decrementProductCount(Set<BoardGame> games) {
         Set<Product> toUpdate = new HashSet<>();
         for (BoardGame game : games) {
             Product product = boardGameRepository.findById(game.getId())
                     .map(BoardGame::getProduct)
                     .orElseThrow(() -> new NoProductFoundException("No Product found"));
+            //TODO: what in case 2 concurrent transactions try to read count?
+            // Native query: BEGIN transaction
+            // select * from BoardGame bg JOIN Product p on bg.productId=p.id where bg.id = {game_id}
+            // UPDATE Product SET count = (count - 1)
+            // (if count == 0) UPDATE Product SET inStock = false
+            // COMMIT
             Integer count = product.getCount();
             if (count > 0) {
                 count--;
@@ -62,6 +73,8 @@ public class StockService {
             }
             toUpdate.add(product);
         }
+        log.info("Thread name: " + Thread.currentThread().getName() + Thread.currentThread().getId());
+        toUpdate.forEach(item -> log.info(String.valueOf(item)));
         productRepository.saveAll(toUpdate);
     }
 }

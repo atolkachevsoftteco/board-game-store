@@ -1,0 +1,44 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  flyway:
+    baseline-on-migrate: true
+  datasource:
+    hikari:
+      schema: shop_schema
+    url: 'jdbc:postgresql://localhost:5432/game_shop'
+    username: postgres
+    password: '123456'
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: '{CLIENT_ID:null}'
+            client-secret: '{SECRET_KEY:null}'
+admin:
+  emails:
+    list: 'sachatol19@gmail.com,alex123@gmail.com'
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+security:
+  oauth2:
+    client:
+      client-id: first-client
+      client-secret: noonewilleverguess

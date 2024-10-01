@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    schema: test_schema
+    url: jdbc:tc:postgresql:15.6:///test_database
+    username: user
+    password: password
+    hikari:
+      schema: test_schema
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: public
+  flyway:
+    enabled: false

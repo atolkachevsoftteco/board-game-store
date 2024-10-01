@@ -4,7 +4,6 @@ import com.alex.gamestore.model.BoardGame;
 import com.alex.gamestore.model.Booking;
 import com.alex.gamestore.model.User;
 import com.alex.gamestore.service.BookingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +18,15 @@ import java.util.Set;
 @RequestMapping("/booking")
 public class BookingController {
 
-    @Autowired
-    private BookingService bookingService;
+    private final BookingService bookingService;
+
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
     @PostMapping
     public ResponseEntity<Booking> bookGames(@RequestBody @Valid Set<BoardGame> games,
                                              @RequestParam int days) {
-
         return ResponseEntity.ok(bookingService.createBooking(new User("123", "123"), games, days));
     }
 }

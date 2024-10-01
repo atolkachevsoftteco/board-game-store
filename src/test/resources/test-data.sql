@@ -1,0 +1,2 @@
+INSERT INTO "public"."board_game" (cost, name, image_url, players, description, age, g_type, desc_small) values (25, 'Покер', './src/assets/images/poker.webp', 2, 'карточная игра, цель которой собрать выигрышную комбинацию или вынудить всех соперников прекратить участвовать в игре.', 12, 'CLASSIC', 'Настольная игра');
+INSERT INTO "public"."product" (game_id, count, in_stock) values (1, 10, false);

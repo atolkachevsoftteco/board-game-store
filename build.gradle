@@ -41,10 +41,15 @@ dependencies {
 	implementation group: 'org.keycloak', name: 'keycloak-rest-admin-ui-ext', version: '21.1.1'
 	implementation group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '6.2.4.Final'
 
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.testcontainers:postgresql:1.19.6'
+	// https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
+	testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
+
 }
 
 //task updateVersionNumber {

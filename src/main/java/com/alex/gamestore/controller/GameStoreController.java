@@ -3,7 +3,6 @@ package com.alex.gamestore.controller;
 import com.alex.gamestore.model.BoardGame;
 import com.alex.gamestore.model.GameType;
 import com.alex.gamestore.service.StockService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class GameStoreController {
 
-    @Autowired
-    private StockService stockService;
+    private final StockService stockService;
+
+    public GameStoreController(StockService stockService) {
+        this.stockService = stockService;
+    }
 
     @GetMapping(path = "/games")
     public ResponseEntity<Page<BoardGame>> fetchAllGames(@PageableDefault(sort = {"name"}, direction = Sort.Direction.ASC) Pageable pageable,
